@@ -22,7 +22,7 @@ app.use(function(req, res, next) {
 
 app.get('/test', async (req,res)=>{
     try{
-        res.send({true});
+        res.send(true);
     }catch (err){
         console.log(err)
         res.status(500).send();
