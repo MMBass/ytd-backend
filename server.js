@@ -68,17 +68,17 @@ app.get('/download',async (req,res)=>{
         console.log(err);
         res.status(500).send();
     }
-
 });
 
 app.get("/ytsr",async (req,res)=>{
     const searchResults = await ytsr("data");
     const items = searchResults.items;
+    console.log(items);
     for(i in items){
         if(items[i].type != 'video') items.splice(items[i],1); 
-        items[i].id = {videoId:id};
+        items[i].id = {videoId: items[i].id};
     }
-    res.send(searchResults);
+    res.send(items);
 });
 
 app.listen(PORT, () => {
