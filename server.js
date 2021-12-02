@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
 const ytdl = require('ytdl-core');
+const ytsr = require('ytsr');
 
 const app = express();
 const PORT = process.env.PORT||5000;
@@ -68,6 +69,15 @@ app.get('/download',async (req,res)=>{
         res.status(500).send();
     }
 
+});
+
+app.get("/ytsr",async (req,res)=>{
+    const searchResults = await ytsr("data");
+    const items = searchResults.items;
+    for(i in items){
+        if(items[i].type != 'video') items.splice(items[i],1); 
+    }
+    res.send(searchResults);
 });
 
 app.listen(PORT, () => {
