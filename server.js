@@ -76,6 +76,7 @@ app.get("/ytsr",async (req,res)=>{
     const items = searchResults.items;
     for(i in items){
         if(items[i].type != 'video') items.splice(items[i],1); 
+        items[i].id = {videoId:id};
     }
     res.send(searchResults);
 });
