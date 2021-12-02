@@ -75,10 +75,11 @@ app.get("/ytsr",async (req,res)=>{
     const items = searchResults.items;
     console.log(items);
     for(i in items){
+
         if(items[i].type != 'video') items.splice(items[i],1); 
         items[i].id = {videoId: items[i].id};
+        res.send(items[i].id);
     }
-    res.send(items);
 });
 
 app.listen(PORT, () => {
