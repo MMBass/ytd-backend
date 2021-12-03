@@ -71,7 +71,7 @@ app.get('/download',async (req,res)=>{
 });
 
 app.get("/ytsr",async (req,res)=>{
-    const searchResults = await ytsr("data");
+    const searchResults = await ytsr(req.query.term);
     const items = searchResults.items;
     console.log(items);
     for(i in items){
