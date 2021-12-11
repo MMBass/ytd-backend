@@ -83,6 +83,7 @@ app.get("/ytsr", async (req, res) => {
         const items = searchResults.items;
 
         res.send(items);
+        
     }catch(e){
         console.log(e);
     }
