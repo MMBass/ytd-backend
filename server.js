@@ -60,10 +60,11 @@ app.get('/download', async (req, res) => {
         let info = await ytdl.getInfo(v_id);
 
         if (formtCode === 'audio') {
-            res.header('Content-Disposition',contentDisposition('attachment; filename="' + info.videoDetails.title + '.mp3"'));
+            // 'attachment; filename="' 
+            res.header('Content-Disposition',contentDisposition(info.videoDetails.title)+".mp3");
             ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
         } else {
-            res.header('Content-Disposition', contentDisposition('attachment; filename="' + contentDispositioninfo.videoDetails.title + '.mp4"'));
+            res.header('Content-Disposition',contentDisposition(info.videoDetails.title)+".mp4");
             let format = ytdl.chooseFormat(info.formats, { quality: formtCode });
             ytdl(YT_URL, { format }).pipe(res);
         }
