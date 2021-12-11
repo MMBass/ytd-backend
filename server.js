@@ -61,10 +61,10 @@ app.get('/download', async (req, res) => {
 
         if (formtCode === 'audio') {
             // 'attachment; filename="' 
-            res.header('Content-Disposition',contentDisposition(info.videoDetails.title)+".mp3");
+            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
             ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
         } else {
-            res.header('Content-Disposition',contentDisposition(info.videoDetails.title)+".mp4");
+            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
             let format = ytdl.chooseFormat(info.formats, { quality: formtCode });
             ytdl(YT_URL, { format }).pipe(res);
         }
@@ -76,15 +76,11 @@ app.get('/download', async (req, res) => {
 });
 
 app.get("/ytsr", async (req, res) => {
-    const searchResults = await ytsr(req.query.term);
+    const filters1 = await ytsr.getFilters(req.query.term);
+    const filter1 = filters1.get('Type').get('Video');
+    const searchResults = await ytsr(filter1);
     const items = searchResults.items;
-    console.log(items);
-    for (i in items) {
 
-        if (items[i].type != 'video') items.splice(items[i], 1);
-        items[i].id = { videoId: items[i].id };
-        console.log(items[i].id);
-    }
     res.send(items);
 });
 
