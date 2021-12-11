@@ -26,16 +26,15 @@ app.get('/',(req, res)=>{
 app.get('/getInfo',async (req,res)=>{
     try{
         let v_id = req.query.v_id;
-        console.log(v_id);
         let info = await ytdl.getInfo(v_id);
         let avilableFormats = [{format:"mp3",quality:"audio",code:"audio"}];
     
         let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
         info.formats.forEach(function(item) {  
-            // && item.mimeType.indexOf('mp4a') >= 0
-            if(item.qualityLabel != null && item.mimeType.indexOf('mp4') >= 0 ){
-                avilableFormats.push({format:'mp4',quality:item.qualityLabel,code:item.itag});
+            // && item.mimeType.indexOf('mp4') >= 0
+            if(item.qualityLabel != null ){
+                avilableFormats.push({format:item.mimeType,quality:item.qualityLabel,code:item.itag});
             } 
         });
 
