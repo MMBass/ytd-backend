@@ -36,7 +36,7 @@ app.get('/getInfo',async (req,res)=>{
             if(item.qualityLabel != null ){
 
                 ['codecs="','"',';',','].map((y)=>{
-                    item.mimeType = item.mimeType.replaceAll(y,'');
+                    item.mimeType = item.mimeType.replace(y,'');
                 });
 
                 avilableFormats.push({format:item.mimeType,quality:item.qualityLabel,code:item.itag});
