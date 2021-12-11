@@ -81,7 +81,9 @@ app.get("/ytsr", async (req, res) => {
         const filter1 = filters1.get('Type').get('Video');
         const searchResults = await ytsr(filter1.url);
         const items = searchResults.items;
-
+        for(i in items){
+            items[i].id = {videoId: items[i].id};
+        }
         res.send(items);
         
     }catch(e){
