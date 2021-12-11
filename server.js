@@ -76,12 +76,18 @@ app.get('/download', async (req, res) => {
 });
 
 app.get("/ytsr", async (req, res) => {
-    const filters1 = await ytsr.getFilters(req.query.term);
-    const filter1 = filters1.get('Type').get('Video');
-    const searchResults = await ytsr(filter1);
-    const items = searchResults.items;
+    try{
+        const filters1 = await ytsr.getFilters(req.query.term);
+        const filter1 = filters1.get('Type').get('Video');
+        const searchResults = await ytsr(filter1.url);
+        const items = searchResults.items;
 
-    res.send(items);
+        res.send(items);
+    }catch(e){
+        console.log(e);
+    }
+
+    
 });
 
 app.listen(PORT, () => {
