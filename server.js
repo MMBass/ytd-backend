@@ -34,9 +34,10 @@ app.get('/getInfo',async (req,res)=>{
         info.formats.forEach(function(item) {  
             // && item.mimeType.indexOf('mp4') >= 0
             if(item.qualityLabel != null ){
-                item.mimeType = item.mimeType.replace("codecs=",'');
+                item.mimeType = item.mimeType.replace('codecs="','');
                 item.mimeType = item.mimeType.replace('"','');
-                
+                item.mimeType = item.mimeType.replace(';','');
+
                 avilableFormats.push({format:item.mimeType,quality:item.qualityLabel,code:item.itag});
             } 
         });
