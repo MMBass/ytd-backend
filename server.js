@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    // TODO use api-kkey auth
+    // TODO use api-key auth
     res.status(200).send();
 })
 
@@ -33,7 +33,6 @@ app.get('/getInfo', async (req, res) => {
         let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
         info.formats.forEach(function (item) {
-            // && item.mimeType.indexOf('mp4') >= 0
             if (item.qualityLabel != null) {
 
                 ['codecs="', '"', ';', ','].map((y) => {
@@ -55,17 +54,17 @@ app.get('/getInfo', async (req, res) => {
 app.get('/download', async (req, res) => {
     try {
         var v_id = req.query.v_id;
-        var formtCode = req.query.format;
+        var formatCode = req.query.format;
         var YT_URL = `https://youtu.be/${v_id}`;
         let info = await ytdl.getInfo(v_id);
 
-        if (formtCode === 'audio') {
+        if (formatCode === 'audio') {
             // 'attachment; filename="' 
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
             ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
         } else {
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
-            let format = ytdl.chooseFormat(info.formats, { quality: formtCode });
+            let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
             ytdl(YT_URL, { format }).pipe(res);
         }
 
@@ -76,21 +75,24 @@ app.get('/download', async (req, res) => {
 });
 
 app.get("/ytsr", async (req, res) => {
-    try{
+    try {
+        let resultType = 'Video' || req.query.type;
         const filters1 = await ytsr.getFilters(req.query.term);
-        const filter1 = filters1.get('Type').get('Video');
+        const filter1 = filters1.get('Type').get(resultType);
         const searchResults = await ytsr(filter1.url);
         const items = searchResults.items;
-        for(i in items){
-            items[i].id = {videoId: items[i].id};
+
+        for (i in items) {
+            items[i].id = { videoId: items[i].id };
         }
+
         res.send(items);
-        
-    }catch(e){
+
+    } catch (e) {
         console.log(e);
     }
 
-    
+
 });
 
 app.listen(PORT, () => {
