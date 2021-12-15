@@ -80,10 +80,15 @@ app.get("/ytsr", async (req, res) => {
         const filters1 = await ytsr.getFilters(req.query.term);
         const filter1 = filters1.get('Type').get(resultType);
         const searchResults = await ytsr(filter1.url);
-        const items = searchResults.items;
+        const items = [];
 
-        for (i in items) {
-            items[i].id = { videoId: items[i].id };
+        for (i in searchResults.items) {
+            items[i] = {
+                id: i.id,
+                thumbnail: i.bestThumbnail.url,
+                channelName: i.author.name,
+                title: i.title,
+            }
         }
 
         res.send(items);
