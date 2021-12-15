@@ -87,7 +87,8 @@ app.get("/ytsr", async (req, res) => {
                 id: i.id,
                 thumbnail: i.bestThumbnail.url,
                 channelName: i.author.name,
-                title: i.title,
+                title: (i.title.length > 65) ? i.title.substr(0, 65 - 1) + '...' : i.title, // cut the title if too long
+                longTitle: i.title,
             }
         }
 
