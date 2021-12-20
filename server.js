@@ -90,6 +90,7 @@ app.get("/ytsr", async (req, res) => {
                 title: (i.title.length > 65) ? i.title.substr(0, 65 - 1) + '...' : i.title, // cut the title if too long
                 longTitle: i.title,
             }
+            items.push(i); 
         }
 
         res.send(items);
