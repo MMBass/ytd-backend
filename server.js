@@ -77,9 +77,9 @@ app.get('/download', async (req, res) => {
 app.get("/ytsr", async (req, res) => {
     try {
         let resultType = 'Video' || req.query.type;
-        const filters1 = await ytsr.getFilters(req.query.term);
-        const filter1 = filters1.get('Type').get(resultType);
-        const searchResults = await ytsr(filter1.url);
+      //  const filters1 = await ytsr.getFilters(req.query.term);
+     //   const filter1 = filters1.get('Type').get(resultType);
+        const searchResults = await ytsr(req.query.term);
         const items = [];
 
         for (i in searchResults.items) {
