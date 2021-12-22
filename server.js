@@ -28,16 +28,19 @@ app.get('/getInfo', async (req, res) => {
     try {
         let v_id = req.query.v_id;
         let info = await ytdl.getInfo(v_id);
+        info.formats = ytdl.filterFormats(info.formats, 'audioandvideo');
         let avilableFormats = [{ format: "mp3", quality: "audio", code: "audio" }];
 
-        let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
+        // let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
         info.formats.forEach(function (item) {
+            console.log(item)
             if (item.qualityLabel != null) {
 
                 ['codecs="', '"', ';', ','].map((y) => {
                     item.mimeType = item.mimeType.replace(y, '');
                 });
+                item.mimeType = (item.mimeType.length > 9) ? item.mimeType.substr(0, 9 - 1): item.mimeType, // remove the codex string
 
                 avilableFormats.push({ format: item.mimeType, quality: item.qualityLabel, code: item.itag });
             }
@@ -49,29 +52,6 @@ app.get('/getInfo', async (req, res) => {
         res.status(500).send();
     }
 
-});
-
-app.get('/download', async (req, res) => {
-    try {
-        var v_id = req.query.v_id;
-        var formatCode = req.query.format;
-        var YT_URL = `https://youtu.be/${v_id}`;
-        let info = await ytdl.getInfo(v_id);
-
-        if (formatCode === 'audio') {
-            // 'attachment; filename="' 
-            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
-            ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
-        } else {
-            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
-            let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
-            ytdl(YT_URL, { format }).pipe(res);
-        }
-
-    } catch (err) {
-        console.log(err);
-        res.status(500).send();
-    }
 });
 
 app.get("/ytsr", async (req, res) => {
@@ -101,6 +81,30 @@ app.get("/ytsr", async (req, res) => {
 
 
 });
+
+app.get('/download', async (req, res) => {
+    try {
+        var v_id = req.query.v_id;
+        var formatCode = req.query.format;
+        var YT_URL = `https://youtu.be/${v_id}`;
+        let info = await ytdl.getInfo(v_id);
+
+        if (formatCode === 'audio') {
+            // 'attachment; filename="' 
+            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
+            ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
+        } else {
+            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
+            let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
+            ytdl(YT_URL, { format }).pipe(res);
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).send();
+    }
+});
+
 
 app.listen(PORT, () => {
     console.log('Listening on port ' + PORT + '...');
