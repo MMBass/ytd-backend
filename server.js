@@ -5,6 +5,8 @@ const ytdl = require('ytdl-core');
 const ytsr = require('ytsr');
 const contentDisposition = require('content-disposition');
 
+const ffmpegReencode = require('./services/complex-ffmpeg-reencode');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -28,19 +30,18 @@ app.get('/getInfo', async (req, res) => {
     try {
         let v_id = req.query.v_id;
         let info = await ytdl.getInfo(v_id);
-        info.formats = ytdl.filterFormats(info.formats, 'audioandvideo');
+        // info.formats = ytdl.filterFormats(info.formats, 'audioandvideo');
         let avilableFormats = [{ format: "mp3", quality: "audio", code: "audio" }];
 
         // let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
         info.formats.forEach(function (item) {
-            console.log(item)
             if (item.qualityLabel != null) {
 
                 ['codecs="', '"', ';', ','].map((y) => {
                     item.mimeType = item.mimeType.replace(y, '');
                 });
-                item.mimeType = (item.mimeType.length > 9) ? item.mimeType.substr(0, 9 - 1): item.mimeType, // remove the codex string
+                item.mimeType = (item.mimeType.length > 10) ? item.mimeType.substr(0, 10 - 1): item.mimeType, // remove the codex string
 
                 avilableFormats.push({ format: item.mimeType, quality: item.qualityLabel, code: item.itag });
             }
@@ -93,10 +94,14 @@ app.get('/download', async (req, res) => {
             // 'attachment; filename="' 
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
             ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
-        } else {
+        }else if(formatCode === '18'){
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
             let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
             ytdl(YT_URL, { format }).pipe(res);
+        }else{
+            res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
+            let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
+            ffmpegReencode(YT_URL, format, res);
         }
 
     } catch (err) {
