@@ -41,7 +41,7 @@ app.get('/getInfo', async (req, res) => {
                 ['codecs="', '"', ';', ','].map((y) => {
                     item.mimeType = item.mimeType.replace(y, '');
                 });
-                item.mimeType = (item.mimeType.length > 10) ? item.mimeType.substr(0, 10 - 1): item.mimeType, // remove the codex string
+                item.mimeType = (item.mimeType.length > 11) ? item.mimeType.substr(0, 11 - 1): item.mimeType, // remove the codex string
 
                 avilableFormats.push({ format: item.mimeType, quality: item.qualityLabel, code: item.itag });
             }
@@ -87,6 +87,7 @@ app.get('/download', async (req, res) => {
     try {
         var v_id = req.query.v_id;
         var formatCode = req.query.format;
+        
         var YT_URL = `https://youtu.be/${v_id}`;
         let info = await ytdl.getInfo(v_id);
 
@@ -101,6 +102,7 @@ app.get('/download', async (req, res) => {
         }else{
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
             let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
+            console.log(format)
             ffmpegReencode(YT_URL, format, res);
         }
 
