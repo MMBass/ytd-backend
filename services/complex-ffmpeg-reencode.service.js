@@ -14,8 +14,8 @@ module.exports = function ffmpegReencode(ref, format, res) {
     console.log("start ffmpeg");
 
     // Get audio and video stream going
-    const audio = ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' })
-    const video = ytdl(ref, { format })
+    const audio = ytdl(ref, { filter: 'audioonly', quality: 'highestaudio' });
+    const video = ytdl(ref, { format });
 
     // Start the ffmpeg child process
     const ffmpegProcess = cp.spawn(ffmpeg, [
