@@ -21,7 +21,6 @@ const download = async (req, res) => {
         } else {
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp4");
             let format = ytdl.chooseFormat(info.formats, { quality: formatCode });
-            console.log(format)
             ffmpegReencode(YT_URL, format, res);
         }
 

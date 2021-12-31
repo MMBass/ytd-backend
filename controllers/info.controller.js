@@ -5,10 +5,7 @@ const getInfo = async (req, res) => {
     try {
         let v_id = req.query.v_id;
         let info = await ytdl.getInfo(v_id);
-        // info.formats = ytdl.filterFormats(info.formats, 'audioandvideo');
         let avilableFormats = [{ format: "mp3", quality: "audio", code: "audio" }];
-
-        // let audioFormats = ytdl.filterFormats(info.formats, 'audioonly');
 
         info.formats.forEach(function (item) {
             if (item.qualityLabel != null) {

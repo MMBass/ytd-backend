@@ -12,11 +12,19 @@ playlist download option by one requst not avilable yet
 
 `GET /`
 
+    headers:{
+        'x-api-key': google-api-key
+    }
+
 ### Response
 
     HTTP/1.1 200 OK
     Status: 200 OK
     Connection: close
+
+    headers:{
+        'access-token': access-token
+    }
 
 ## Get term serach results 
 
@@ -25,6 +33,10 @@ playlist download option by one requst not avilable yet
 `GET /ytsr/`
 
     '?term=str&type=str'
+
+    headers:{
+        'x-access-token': token
+    }
 
 ### Response
 
@@ -46,6 +58,10 @@ playlist download option by one requst not avilable yet
 
     '?v_id=str'
 
+    headers:{
+        'x-access-token': token
+    }
+
 ### Response
 
     HTTP/1.1 200
@@ -65,7 +81,7 @@ playlist download option by one requst not avilable yet
 
 `GET /download/`
 
-    '?v_id=str&format=166'
+    '?v_id=str&format=166&accessToken=token'
 
 ### Response
 

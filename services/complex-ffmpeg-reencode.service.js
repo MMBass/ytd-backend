@@ -1,8 +1,7 @@
 /**
  * Reencode audio & video without creating files first
- */
+*/
 
-// Buildin with nodejs
 const fs = require('fs');
 const cp = require('child_process');
 const readline = require('readline');
