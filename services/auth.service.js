@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 async function validateKey(reqUser, cb) {
   try {
     // prevent injection here if using DB
-    bcrypt.compare(reqUser.key/*clinet pass*/, process.env.googleTokenHash ||  dev_config.googleTokenHash/*hash*/, function (err, result) {
+    bcrypt.compare(reqUser.key/*clinet pass*/, process.env.googleTokenHash || dev_config.googleTokenHash/*hash*/, function (err, result) {
       if (err) {
         cb(err);
       } else if (result === true) {
@@ -23,16 +23,16 @@ async function validateKey(reqUser, cb) {
 }
 
 function validateAccess(at, cb) {
-    const at_secret = process.env.atSecret || dev_config.atSecret;
-    jwt.verify(at, at_secret, function (err, decoded) {
-      if (err) {
-        cb(err);
-        return;
-      }
-      if(decoded.user){
-        cb(null, true);
-      }
-    });
+  const at_secret = process.env.atSecret || dev_config.atSecret;
+  jwt.verify(at, at_secret, function (err, decoded) {
+    if (err) {
+      cb(err);
+      return;
+    }
+    if (decoded.user) {
+      cb(null, true);
+    }
+  });
 }
 
 module.exports = { validateKey, validateAccess };
