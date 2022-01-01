@@ -6,7 +6,7 @@ playlist download option by one requst not avilable yet
 
 # API
 
-## Call the server for start
+## Start the server
 
 ### Request
 
@@ -26,13 +26,13 @@ playlist download option by one requst not avilable yet
         'access-token': access-token
     }
 
-## Get term serach results 
+## Search 
 
 ### Request
 
 `GET /ytsr/`
 
-    '?term=str&type=str'
+    '?term=str&type=video/playlist'
 
     headers:{
         'x-access-token': token
@@ -51,6 +51,8 @@ playlist download option by one requst not avilable yet
         title: str, 
         longTitle: str
     }
+
+## Get formats 
 
 ### Request
 
@@ -76,6 +78,8 @@ playlist download option by one requst not avilable yet
         ]
       
     }
+
+## Get file
 
 ### Request
 

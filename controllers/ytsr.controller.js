@@ -4,13 +4,15 @@ const { customCutString } = require('../utils');
 
 const search = async function (req, res) {
     try {
-        let resultType = 'Video' || req.query.type;
+        req.query.type = req.query.type[0].toUpperCase() + req.query.type.substring(1) //ytsr type must be fLCapital
+        let resultType = req.query.type || 'Video';
         const filters1 = await ytsr.getFilters(req.query.term);
         const filter1 = filters1.get('Type').get(resultType);
         const searchResults = await ytsr(filter1.url);
         const items = [];
 
         for (i of searchResults.items) {
+            if(i.type !== 'video') console.log(i.type)
             i = {
                 id: i.id,
                 thumbnail: i.bestThumbnail.url,
