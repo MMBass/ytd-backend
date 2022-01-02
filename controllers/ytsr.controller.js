@@ -11,18 +11,29 @@ const search = async function (req, res) {
         const searchResults = await ytsr(filter1.url);
         const items = [];
 
-        for (i of searchResults.items) {
-            if(i.type !== 'video') console.log(i.type)
-            i = {
-                id: i.id,
-                thumbnail: i.bestThumbnail.url,
-                channelName: i.author.name,
-                title: customCutString(i.title, 65, '...'), // cut the title if too long
-                longTitle: i.title,
+        if(resultType === 'Playlist'){
+            for (i of searchResults.items) {
+                i = {
+                    id: i.playlistID,
+                    thumbnail: i.firstVideo.bestThumbnail.url,
+                    channelName: i.owner.name,
+                    title: customCutString(i.title, 65, '...'), // cut the title if too long
+                    longTitle: i.title,
+                }
+                items.push(i);
             }
-            items.push(i);
+        }else{
+            for (i of searchResults.items) {
+                i = {
+                    id: i.id,
+                    thumbnail: i.bestThumbnail.url,
+                    channelName: i.author.name,
+                    title: customCutString(i.title, 65, '...'), // cut the title if too long
+                    longTitle: i.title,
+                }
+                items.push(i);
+            }
         }
-
         res.send(items);
 
     } catch (e) {
