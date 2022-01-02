@@ -15,6 +15,7 @@ const search = async function (req, res) {
             for (i of searchResults.items) {
                 i = {
                     id: i.playlistID,
+                    length: i.length,
                     thumbnail: i.firstVideo.bestThumbnail.url,
                     channelName: i.owner.name,
                     title: customCutString(i.title, 65, '...'), // cut the title if too long
