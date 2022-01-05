@@ -11,7 +11,7 @@ const download = async (req, res) => {
         var YT_URL = `https://youtu.be/${v_id}`;
         let info = await ytdl.getInfo(v_id);
 
-        if(formatCode === 'audio'){
+        if(req.query.type === 'list'){
             let fileName = info.videoDetails.title+'.mp3';
             res.header('Content-Disposition', contentDisposition(fileName));
             // res.header('Content-Type','audio/mp3');
@@ -19,7 +19,7 @@ const download = async (req, res) => {
                 res.download('./'+fileName, function(err){
                     //CHECK FOR ERROR
                     // fs.unlink('./'+filePath, (err)=>{
-                        console.log(err);
+                        console.log(err);y
                     // });
                   });
             });
