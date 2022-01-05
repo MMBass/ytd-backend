@@ -1,3 +1,4 @@
+const fs = require('fs');
 const contentDisposition = require('content-disposition');
 const ytdl = require('ytdl-core');
 const ffmpegReencode = require('../services/complex-ffmpeg-reencode.service');
@@ -10,7 +11,19 @@ const download = async (req, res) => {
         var YT_URL = `https://youtu.be/${v_id}`;
         let info = await ytdl.getInfo(v_id);
 
-        if (formatCode === 'audio') {
+        if(req.query.type === 'list'){
+            res.header('Content-Disposition', contentDisposition(filePath));
+            res.download(filePath);
+            res.header('Content-Type','audio/mp3');
+            ytdl(YT_URL, { filter: 'audioonly' }).pipe(fs.createWriteStream(filePath)).on('finish',()=>{
+                res.download('./'+filePath, function(err){
+                    //CHECK FOR ERROR
+                    // fs.unlink('./'+filePath, (err)=>{
+                    //     console.log(err);
+                    // });
+                  });
+            });
+        }else if (formatCode === 'audio') {
             // 'attachment; filename="' 
             res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
             ytdl(YT_URL, { filter: 'audioonly' }).pipe(res);
