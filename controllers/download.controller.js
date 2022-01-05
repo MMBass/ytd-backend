@@ -11,15 +11,15 @@ const download = async (req, res) => {
         var YT_URL = `https://youtu.be/${v_id}`;
         let info = await ytdl.getInfo(v_id);
 
-        if(req.query.type === 'list'){
-            res.header('Content-Disposition', contentDisposition(filePath));
-            res.download(filePath);
-            res.header('Content-Type','audio/mp3');
-            ytdl(YT_URL, { filter: 'audioonly' }).pipe(fs.createWriteStream(filePath)).on('finish',()=>{
-                res.download('./'+filePath, function(err){
+        if(formatCode === 'audio'){
+            let fileName = info.videoDetails.title+'.mp3';
+            res.header('Content-Disposition', contentDisposition(fileName));
+            // res.header('Content-Type','audio/mp3');
+            ytdl(YT_URL, { filter: 'audioonly' }).pipe(fs.createWriteStream(fileName)).on('finish',()=>{
+                res.download('./'+fileName, function(err){
                     //CHECK FOR ERROR
                     // fs.unlink('./'+filePath, (err)=>{
-                    //     console.log(err);
+                        console.log(err);
                     // });
                   });
             });
