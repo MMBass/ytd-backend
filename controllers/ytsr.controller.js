@@ -10,8 +10,9 @@ const search = async function (req, res) {
         const filter1 = filters1.get('Type').get(resultType);
         const searchResults = await ytsr(filter1.url);
         const items = [];
-
+        
         if(resultType === 'Playlist'){
+    
             for (i of searchResults.items) {
                 i = {
                     id: i.playlistID,

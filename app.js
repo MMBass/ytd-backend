@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require("socket.io");
 const cors = require('cors');
 const helmet = require('helmet');
 
@@ -9,6 +11,16 @@ const downloadRouter = require('./routes/download.router.js');
 const authMiddleware = require('./middleware/auth.js');
 
 const app = express();
+const server = http.createServer(app);
+global.io = new Server(server,{
+    cors: {
+      origin: "*",
+      methods: ["GET", "POST"],
+      allowedHeaders: ["access-token"],
+      credentials: true
+    }
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.use(helmet());
@@ -44,4 +56,6 @@ app.use(function (err, req, res, next) {
     res.status(err.status || 500).send({ message: err.message });
 })
 
-app.listen(PORT, console.log('Listening on port ' + PORT + '...'));
+server.listen(PORT, console.log('Listening on port ' + PORT + '...'));
+
+module.exports = { io:'dkjsl' };
