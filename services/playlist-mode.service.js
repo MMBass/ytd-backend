@@ -16,6 +16,7 @@ module.exports = function playlistLoop(req, res, info, YT_URL) {
   ytdl(YT_URL, { filter: 'audioonly' })
   .pipe(res)
   .on('finish', () => {
+    console.log('finish');
     tempSocket.emit('listContinue', 'listContinue');
     if (req.query.index === 'last') {
       tempSocket.emit('listFinish', 'listFinish');
