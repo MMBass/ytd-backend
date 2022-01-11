@@ -10,7 +10,7 @@ setTimeout(() => {
   });
 }, 2000); // let the server (app.js) start before global io declaredd
 
-module.exports = function playlistLoop(req, res, info, YT_URL) {
+module.exports = function playlistLoop(req, res, YT_URL) {
   res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
   ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
