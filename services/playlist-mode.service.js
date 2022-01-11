@@ -17,16 +17,12 @@ module.exports = function playlistLoop(req, res, YT_URL) {
     .on('finish', () => {
       if (req.query.index === 'last') {
         tempSocket.emit('listFinish', 'listFinish');
-        io.disconnect();
-        io = undefined;
       }
       tempSocket.emit('listContinue', 'listContinue');
     })
     .on('error', () => {
       if (req.query.index === 'last') {
         tempSocket.emit('listFinish', 'listFinish with error');
-        io.disconnect();
-        io = undefined;
       }
       tempSocket.emit('listContinue', 'listContinue with error');
     });
