@@ -8,11 +8,10 @@ setTimeout(() => {
     tempSocket = socket;
     socket.emit('listContinue', 'listContinue');
   });
-}, 2000);
-
+}, 2000); // let the server (app.js) start before global io declaredd
 
 module.exports = function playlistLoop(req, res, info, YT_URL) {
-  res.header('Content-Disposition', contentDisposition(info.videoDetails.title) + ".mp3");
+  res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
   ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
     .on('finish', () => {
