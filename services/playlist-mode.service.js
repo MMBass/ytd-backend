@@ -14,13 +14,13 @@ module.exports = function playlistLoop(req, res, YT_URL) {
   res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
 
   let tempYtdl;
-  let tempInteval;
+  let tempInterval;
 
   function trackFinish() {
-    tempInteval = setInterval(() => {
-      if (temp) {
-        if (temp.finished) {
-          clearInterval(tempInteval);
+    tempInterval = setInterval(() => {
+      if (tempYtdl) {
+        if (tempYtdl.finished) {
+          clearInterval(tempInterval);
           setTimeout(() => {
             if (req.query.index === 'last') {
 
