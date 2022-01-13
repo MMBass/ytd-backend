@@ -20,6 +20,7 @@ module.exports = function playlistLoop(req, res, YT_URL) {
     tempInterval = setInterval(() => {
       if (tempYtdl) {
         if (tempYtdl.finished) {
+          console.log(tempYtdl.finished)
           clearInterval(tempInterval);
           setTimeout(() => {
             if (req.query.index === 'last') {
