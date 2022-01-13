@@ -20,7 +20,6 @@ module.exports = function playlistLoop(req, res, YT_URL) {
     tempInterval = setInterval(() => {
       if (tempYtdl) {
         if (tempYtdl.finished) {
-          console.log(tempYtdl.finished)
           clearInterval(tempInterval);
           setTimeout(() => {
             if (req.query.index === 'last') {
@@ -34,9 +33,13 @@ module.exports = function playlistLoop(req, res, YT_URL) {
     }, 100);
   }
 
+  setTimeout(() => {
+    console.log(tempYtdl)
+  }, 15* 1000);
   tempYtdl = ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
     .on('close', () => {
+      console.log(tempYtdl)
       trackFinish();
     })
     .on('error', () => {
