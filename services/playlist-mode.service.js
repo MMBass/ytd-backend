@@ -14,7 +14,7 @@ module.exports = function playlistLoop(req, res, YT_URL) {
   res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
   ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
-    .on('finish', () => {
+    .on('close', () => {
       if (req.query.index === 'last') {
         tempSocket.emit('listFinish', 'listFinish');
       }
