@@ -42,10 +42,11 @@ module.exports = function playlistLoop(req, res, YT_URL) {
     if(tempYtdl){
       if(tempYtdl.req){
         var syms = Object.getOwnPropertySymbols(tempYtdl.req).find(function(sym) {
+          console.log(String(sym));
           return String(sym) === "Symbol(kHandle)";
         });
         console.log('tempYtdl.req[syms] : ' + tempYtdl.req[syms]);
-        console.log('tempYtdl.req[syms][0] : ' + tempYtdl.req[syms][0]);
+        // console.log('tempYtdl.req[syms][0] : ' + tempYtdl.req[syms][0]);
       }
     }
   }, 1000);
@@ -53,7 +54,6 @@ module.exports = function playlistLoop(req, res, YT_URL) {
   tempYtdl = ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
     .on('close', () => {
-      // console.log(tempYtdl)
       trackFinish();
     })
     .on('error', () => {
