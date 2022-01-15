@@ -45,6 +45,12 @@ module.exports = function playlistLoop(req, res, YT_URL) {
       }
       tempSocket.emit('listContinue', 'listContinue');
     })
+    .on('finish', (src) => {
+      console.log('finish')
+    })
+    .on('close', (src) => {
+      console.log('close')
+    })
     .on('error', () => {
       if (req.query.index === 'last') {
         tempSocket.emit('listFinish', 'listFinish with error');
