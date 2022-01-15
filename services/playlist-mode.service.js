@@ -14,6 +14,7 @@ module.exports = function playlistLoop(req, res, YT_URL) {
   res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
 
   let tempYtdl;
+
   // let tempInterval;
 
   // function trackFinish() {
@@ -35,7 +36,8 @@ module.exports = function playlistLoop(req, res, YT_URL) {
 
   tempYtdl = ytdl(YT_URL, { filter: 'audioonly' })
     .pipe(res)
-    .on('close', () => {
+    .on('unpipe', (src) => {
+      console.log('unpipe')
       // trackFinish();
       if (req.query.index === 'last') {
 
