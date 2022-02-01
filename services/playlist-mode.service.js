@@ -13,43 +13,13 @@ setTimeout(() => {
 module.exports = function playlistLoop(req, res, YT_URL) {
   res.header('Content-Disposition', contentDisposition(req.query.title) + ".mp3");
 
-  let tempYtdl;
-
-  // let tempInterval;
-
-  // function trackFinish() {
-  //   tempInterval = setInterval(() => {
-  //     if (tempYtdl) {
-  //       if (tempYtdl.finished) {
-  //         clearInterval(tempInterval);
-  //         setTimeout(() => {
-  //           if (req.query.index === 'last') {
-
-  //             tempSocket.emit('listFinish', 'listFinish');
-  //           }
-  //           tempSocket.emit('listContinue', 'listContinue');
-  //         }, 500);
-  //       }
-  //     }
-  //   }, 100);
-  // }
-
-  tempYtdl = ytdl(YT_URL, { filter: 'audioonly' })
+  tempYtdl = ytdl(YT_URL, { filter: 'audioonly' },()=>{console.log('ytdl')})
     .pipe(res)
-    .on('unpipe', (src) => {
-      console.log('unpipe')
-      // trackFinish();
+    .on('close', () => {
       if (req.query.index === 'last') {
-
         tempSocket.emit('listFinish', 'listFinish');
       }
       tempSocket.emit('listContinue', 'listContinue');
-    })
-    .on('finish', (src) => {
-      console.log('finish')
-    })
-    .on('close', (src) => {
-      console.log('close')
     })
     .on('error', () => {
       if (req.query.index === 'last') {
