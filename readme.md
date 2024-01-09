@@ -1,8 +1,8 @@
 # About 
-Personal  YT videos downloader
-using ytdl-core
-filter music videos for music mode
-playlist download option by one requst not avilable yet
+Personal YT videos downloader
+using ytdl-core.
+filter music for music mode.
+and playlist download option by socket.
 
 # API
 
